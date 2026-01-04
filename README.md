@@ -52,6 +52,7 @@ This is a **working prototype** with:
 - [Current Features](#-current-features-prototype-v10)
 - [Architecture](#-system-architecture)
 - [Tech Stack](#-tech-stack)
+- [Azure Cloud Services Used](#️-azure-cloud-services-used)
 - [Live Demo](#-live-demo)
 - [Future Research Directions](#-future-research-directions)
 - [Getting Started](#-getting-started)
@@ -190,6 +191,39 @@ Total Risk Score = (Vitals × 50%) + (Symptoms × 30%) + (History × 20%)
 ---
 
 ## 🏗️ System Architecture
+
+### Deployment Topology
+
+ClinGuard AI is deployed as a distributed cloud application:
+
+```
+┌─────────────────────────────────────────────────────────────┐
+│                      VERCEL (PLANNED)                        │
+│                     Frontend Hosting                          │
+│              React + TypeScript + Vite                        │
+└────────────────────────┬────────────────────────────────────┘
+                         │ HTTPS/JSON (API Calls)
+                         ▼
+┌─────────────────────────────────────────────────────────────┐
+│                  AZURE APP SERVICE                            │
+│                   Backend API Server                          │
+│              Node.js 20 + Express 4.18.2                      │
+│         Region: Central India | Port: 8000                   │
+└────────────────────────┬────────────────────────────────────┘
+                         │ Telemetry Stream
+                         ▼
+┌─────────────────────────────────────────────────────────────┐
+│              AZURE APPLICATION INSIGHTS                       │
+│          Real-Time Monitoring & Performance Tracking          │
+│   Request Logs | Error Tracking | Dependency Mapping         │
+└─────────────────────────────────────────────────────────────┘
+```
+
+**Key Points:**
+- **Frontend:** Planned deployment to Vercel (static site hosting)
+- **Backend:** Live on Azure App Service (Central India region)
+- **Monitoring:** Azure Application Insights tracks all API requests, performance metrics, and errors
+- **Communication:** HTTPS-only with CORS enabled for cross-origin requests
 
 ### High-Level Architecture
 
@@ -347,6 +381,7 @@ backend/src/
 
 ### Deployment
 - **Azure App Service** — Backend hosting (Linux B1 tier)
+- **Azure Application Insights** — Monitoring & telemetry
 - **Vercel** — Frontend hosting (planned)
 - **GitHub** — Version control & CI/CD
 
@@ -354,6 +389,77 @@ backend/src/
 - **ESLint** — Code quality
 - **TypeScript ESLint** — Type checking
 - **VS Code** — IDE
+
+---
+
+## ☁️ Azure Cloud Services Used
+
+ClinGuard AI leverages Microsoft Azure's cloud infrastructure to ensure reliability, scalability, and observability. Below are the Azure services currently integrated into our production system:
+
+### 1. Azure App Service (Backend Hosting)
+
+**Purpose:** Hosts the Node.js Express backend API in a secure, scalable environment.
+
+**Configuration:**
+- **Plan:** Linux B1 tier (Basic)
+- **Region:** Central India
+- **Runtime:** Node.js 20 LTS
+- **Port:** 8000 (auto-assigned by Azure)
+- **Deployment:** Continuous deployment via Azure CLI
+
+**Why Azure App Service?**
+- **Imagine Cup Requirement:** Demonstrates real-world cloud deployment skills
+- **Reliability:** 99.95% SLA with built-in load balancing
+- **Scalability:** Easy vertical/horizontal scaling as user base grows
+- **Security:** HTTPS by default, managed SSL certificates
+- **Developer Experience:** Seamless Git integration and logs streaming
+
+**Live URL:**  
+`https://clinguard-backend-api-ftemg2ddaca3c4d0.centralindia-01.azurewebsites.net`
+
+### 2. Azure Application Insights (Monitoring & Telemetry)
+
+**Purpose:** Provides real-time monitoring, performance tracking, and observability for the backend API.
+
+**What It Tracks:**
+- **Request Telemetry:** Every API call (`/api/health`, `/api/analyze-risk`)
+- **Response Times:** Average latency, slow requests, timeouts
+- **Dependency Tracking:** External service calls (if any)
+- **Failures & Exceptions:** Automatic error logging with stack traces
+- **Performance Metrics:** CPU, memory, HTTP throughput
+
+**Why Application Insights?**
+- **Production Observability:** Know if the system is healthy 24/7
+- **Performance Optimization:** Identify bottlenecks in risk engine
+- **Error Diagnosis:** Detailed logs for debugging production issues
+- **Usage Analytics:** Track which endpoints are most used
+- **Imagine Cup Demo:** Shows understanding of DevOps/monitoring best practices
+
+**Key Features Enabled:**
+- Real-time performance dashboard
+- Custom telemetry for risk scoring events
+- Automatic dependency tracking (Node.js runtime)
+- Log correlation (trace requests end-to-end)
+
+### How to Verify Telemetry (For Judges/Evaluators)
+
+If you have access to the Azure Portal:
+
+1. **Navigate to Azure Portal** → [portal.azure.com](https://portal.azure.com)
+2. **Find the App Service:** Search for `clinguard-backend-api` (Central India)
+3. **Open Application Insights:**
+   - In the left sidebar, click **Application Insights**
+   - Click **View Application Insights data**
+4. **Explore Dashboards:**
+   - **Live Metrics:** Real-time request/response streams
+   - **Performance:** Slowest operations, dependency calls
+   - **Failures:** Error rates, exception details
+   - **Metrics Explorer:** Custom charts (e.g., risk score distribution)
+
+**Without Portal Access (Public Verification):**
+- The backend API `/api/health` endpoint responds with telemetry-enabled status
+- Response headers include `Request-Id` for distributed tracing
+- Every API call is logged with timestamps and correlation IDs
 
 ---
 
