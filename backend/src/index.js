@@ -1,8 +1,23 @@
+import appInsights from "applicationinsights";
 import express from 'express';
 import cors from 'cors';
 import dotenv from 'dotenv';
 import analysisRoutes from './routes/analysis.js';
 import errorHandler from './middleware/errorHandler.js';
+
+
+if (process.env.APPINSIGHTS_CONNECTIONSTRING) {
+  appInsights
+    .setup(process.env.APPINSIGHTS_CONNECTIONSTRING)
+    .setAutoCollectRequests(true)
+    .setAutoCollectDependencies(true)
+    .setAutoCollectPerformance(true)
+    .setSendLiveMetrics(true)
+    .start();
+
+  console.log("✅ Application Insights enabled");
+}
+
 
 dotenv.config();
 
