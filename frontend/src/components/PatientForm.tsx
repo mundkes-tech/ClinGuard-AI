@@ -74,11 +74,13 @@ export default function PatientForm({ onSubmit, disabled = false }: PatientFormP
     }
   };
 
+  const responsiveRowStyles = getResponsiveRowStyles();
+
   return (
     <form onSubmit={handleSubmit} style={styles.form}>
       <h2>Patient Information</h2>
 
-      <div style={styles.row}>
+      <div style={{...styles.row, ...responsiveRowStyles}}>
         <div style={styles.column}>
           <label htmlFor="age">Age (years)</label>
           <input
@@ -103,7 +105,7 @@ export default function PatientForm({ onSubmit, disabled = false }: PatientFormP
         </div>
       </div>
 
-      <div style={styles.row}>
+      <div style={{...styles.row, ...responsiveRowStyles}}>
         <div style={styles.column}>
           <label htmlFor="systolicBP">Systolic BP (mmHg)</label>
           <input
@@ -186,32 +188,32 @@ const styles = {
     padding: '25px',
     borderRadius: '8px',
     boxShadow: '0 2px 8px rgba(0,0,0,0.1)'
-  },
+  } as React.CSSProperties,
   row: {
     display: 'grid',
     gridTemplateColumns: '1fr 1fr',
     gap: '15px',
     marginBottom: '15px'
-  },
+  } as React.CSSProperties,
   column: {
     display: 'flex',
     flexDirection: 'column' as const
-  },
+  } as React.CSSProperties,
   formGroup: {
     marginBottom: '15px'
-  },
+  } as React.CSSProperties,
   error: {
     color: '#d32f2f',
     fontSize: '0.85rem',
     marginTop: '3px'
-  },
+  } as React.CSSProperties,
   checkboxLabel: {
     display: 'flex',
     alignItems: 'center',
     gap: '10px',
     cursor: 'pointer',
     fontSize: '0.95rem'
-  },
+  } as React.CSSProperties,
   submitBtn: {
     width: '100%',
     padding: '12px',
@@ -224,5 +226,22 @@ const styles = {
     cursor: 'pointer',
     marginTop: '10px',
     transition: 'background-color 0.3s'
+  } as React.CSSProperties
+};
+
+// Responsive grid - stack on mobile
+const getResponsiveRowStyles = (): React.CSSProperties => {
+  if (typeof window === 'undefined') return {};
+  
+  const width = window.innerWidth;
+  
+  if (width <= 600) {
+    return {
+      gridTemplateColumns: '1fr',
+      gap: '12px',
+      marginBottom: '12px'
+    };
   }
+  
+  return {};
 };

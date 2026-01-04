@@ -278,3 +278,213 @@ button:disabled {
 .read-the-docs {
   color: #888;
 }
+
+/* ================================ */
+/*     RESPONSIVE DESIGN            */
+/* ================================ */
+
+/* Tablet: 768px - 1024px */
+@media screen and (max-width: 1024px) {
+  .app-header h1 {
+    font-size: 1.75rem;
+  }
+
+  .app-header p {
+    font-size: 0.95rem;
+  }
+
+  form {
+    padding: 20px;
+  }
+
+  form h2 {
+    font-size: 1.2rem;
+  }
+
+  .results-container {
+    padding: 20px;
+  }
+}
+
+/* Mobile Landscape & Smaller Tablets: 600px - 768px */
+@media screen and (max-width: 768px) {
+  .app-header {
+    padding: 25px 15px;
+  }
+
+  .app-header h1 {
+    font-size: 1.5rem;
+  }
+
+  .app-header p {
+    font-size: 0.9rem;
+  }
+
+  form,
+  .results-container {
+    padding: 20px 15px;
+  }
+
+  form h2,
+  .results-container h2 {
+    font-size: 1.15rem;
+  }
+
+  input[type="number"],
+  input[type="text"],
+  select,
+  textarea {
+    padding: 8px;
+    font-size: 0.95rem;
+  }
+
+  button {
+    padding: 10px 20px;
+    font-size: 0.95rem;
+  }
+
+  .risk-badge {
+    padding: 6px 14px;
+    font-size: 0.95rem;
+  }
+
+  .progress-bar {
+    height: 25px;
+  }
+
+  .progress-fill {
+    font-size: 0.85rem;
+  }
+}
+
+/* Mobile Portrait: Below 600px */
+@media screen and (max-width: 600px) {
+  .app-header {
+    padding: 20px 10px;
+  }
+
+  .app-header h1 {
+    font-size: 1.3rem;
+    margin-bottom: 5px;
+  }
+
+  .app-header p {
+    font-size: 0.85rem;
+  }
+
+  form,
+  .results-container {
+    padding: 15px 10px;
+    border-radius: 6px;
+  }
+
+  form h2,
+  .results-container h2 {
+    font-size: 1rem;
+    margin-bottom: 15px;
+  }
+
+  .form-group {
+    margin-bottom: 12px;
+  }
+
+  label {
+    font-size: 0.9rem;
+    margin-bottom: 4px;
+  }
+
+  input[type="number"],
+  input[type="text"],
+  select,
+  textarea {
+    padding: 8px;
+    font-size: 0.9rem;
+  }
+
+  textarea {
+    min-height: 70px;
+  }
+
+  button {
+    padding: 10px 16px;
+    font-size: 0.9rem;
+  }
+
+  .btn-primary {
+    margin-top: 8px;
+  }
+
+  .risk-badge {
+    padding: 6px 12px;
+    font-size: 0.9rem;
+  }
+
+  .progress-bar {
+    height: 22px;
+  }
+
+  .progress-fill {
+    font-size: 0.8rem;
+  }
+
+  .explanation {
+    padding: 12px;
+    font-size: 0.9rem;
+  }
+
+  .disclaimer {
+    padding: 12px;
+    font-size: 0.85rem;
+  }
+
+  .empty-state {
+    padding: 40px 15px;
+    font-size: 0.9rem;
+  }
+}
+
+/* Extra Small Mobile: Below 400px */
+@media screen and (max-width: 400px) {
+  .app-header h1 {
+    font-size: 1.1rem;
+  }
+
+  .app-header p {
+    font-size: 0.8rem;
+  }
+
+  form,
+  .results-container {
+    padding: 12px 8px;
+  }
+
+  form h2,
+  .results-container h2 {
+    font-size: 0.95rem;
+  }
+
+  label {
+    font-size: 0.85rem;
+  }
+
+  input[type="number"],
+  input[type="text"],
+  select,
+  textarea,
+  button {
+    font-size: 0.85rem;
+  }
+
+  .risk-badge {
+    font-size: 0.85rem;
+    padding: 5px 10px;
+  }
+
+  .progress-bar {
+    height: 20px;
+  }
+
+  .progress-fill {
+    font-size: 0.75rem;
+  }
+}

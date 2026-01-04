@@ -29,6 +29,8 @@ export default function Analysis() {
     setError('');
   };
 
+  const responsiveContentStyles = getResponsiveContentStyles();
+
   return (
     <div style={styles.container}>
       <div style={styles.header}>
@@ -36,7 +38,7 @@ export default function Analysis() {
         <Disclaimer />
       </div>
 
-      <div style={styles.content}>
+      <div style={{...styles.content, ...responsiveContentStyles}}>
         <div style={styles.formColumn}>
           <PatientForm onSubmit={handleSubmit} disabled={loading} />
           {error && <div style={styles.errorBox}>{error}</div>}
@@ -63,11 +65,11 @@ const styles = {
     backgroundColor: '#f5f5f5',
     minHeight: 'calc(100vh - 120px)',
     width: '100%'
-  },
+  } as React.CSSProperties,
   header: {
     marginBottom: '30px',
     textAlign: 'center' as const
-  },
+  } as React.CSSProperties,
   content: {
     display: 'grid',
     gridTemplateColumns: '1fr 1fr',
@@ -75,17 +77,17 @@ const styles = {
     maxWidth: '1400px',
     margin: '0 auto',
     width: '100%'
-  },
+  } as React.CSSProperties,
   formColumn: {
     display: 'flex',
     flexDirection: 'column' as const,
     gap: '15px'
-  },
+  } as React.CSSProperties,
   resultsColumn: {
     display: 'flex',
     flexDirection: 'column' as const,
     gap: '15px'
-  },
+  } as React.CSSProperties,
   errorBox: {
     padding: '15px',
     backgroundColor: '#f8d7da',
@@ -93,7 +95,7 @@ const styles = {
     border: '1px solid #f5c6cb',
     borderRadius: '4px',
     fontSize: '14px'
-  },
+  } as React.CSSProperties,
   loadingBox: {
     padding: '20px',
     backgroundColor: '#d1ecf1',
@@ -102,7 +104,7 @@ const styles = {
     borderRadius: '4px',
     fontSize: '14px',
     textAlign: 'center' as const
-  },
+  } as React.CSSProperties,
   emptyState: {
     padding: '40px',
     backgroundColor: 'white',
@@ -110,5 +112,22 @@ const styles = {
     border: '1px solid #ddd',
     textAlign: 'center' as const,
     color: '#999'
+  } as React.CSSProperties
+};
+
+// Responsive breakpoints using CSS-in-JS
+const getResponsiveContentStyles = (): React.CSSProperties => {
+  if (typeof window === 'undefined') return {};
+  
+  const width = window.innerWidth;
+  
+  if (width <= 900) {
+    // Stack columns on tablets and mobile
+    return {
+      gridTemplateColumns: '1fr',
+      gap: '20px'
+    };
   }
+  
+  return {};
 };
