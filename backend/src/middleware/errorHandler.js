@@ -11,12 +11,12 @@ const errorHandler = (err, req, res, next) => {
     });
   }
 
-  // Azure API errors
+  // API/External service errors
   if (err.isAxiosError) {
     return res.status(503).json({
       success: false,
       error: 'External service unavailable',
-      message: 'Azure AI services are temporarily unavailable'
+      message: 'Service temporarily unavailable. Please try again later.'
     });
   }
 

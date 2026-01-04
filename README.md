@@ -1,1005 +1,650 @@
-# ClinGuard AI — Explainable Clinical Risk Support System
+# 🏥 ClinGuard AI — Explainable Clinical Risk Support System
 
-**Imagine Cup 2026 MVP Project**  
+[![Imagine Cup 2026](https://img.shields.io/badge/Imagine%20Cup-2026-blue)](https://imaginecup.microsoft.com/)
+[![Backend Status](https://img.shields.io/badge/Backend-Live%20on%20Azure-success)](https://clinguard-backend-api-ftemg2ddaca3c4d0.centralindia-01.azurewebsites.net/api/health)
+[![License](https://img.shields.io/badge/license-MIT-green)](LICENSE)
+
 **Category:** Health & Life Sciences  
-**Focus:** AI-Powered Cardiac Risk Triage for Primary Care Doctors
+**Team:** ClinGuard AI  
+**Competition:** Microsoft Imagine Cup 2026
+
+> **A student research prototype exploring explainable AI for cardiac risk assessment education**
 
 ---
 
-## 📋 Project Overview
+## 🎯 Executive Summary
 
-**ClinGuard AI** is an AI-powered clinical decision support tool designed to help primary-care doctors identify potential cardiac risk early — especially in busy clinics where doctors have limited time and resources.
+**ClinGuard AI** is an educational prototype developed for Microsoft Imagine Cup 2026 that demonstrates how explainable, rule-based AI can support clinical decision-making education in primary care settings.
 
-### What ClinGuard AI Is
+### What Problem Are We Exploring?
 
-ClinGuard AI is **not** a diagnostic tool and **does not replace doctors**. Instead, it acts as an intelligent clinical assistant that:
+Primary-care physicians in high-volume clinics face time pressure (5-10 minutes per patient) that can lead to missed early warning signs of cardiac conditions. We're researching whether transparent, explainable AI tools could serve as educational aids for clinical risk assessment training.
 
-- ✅ Analyzes patient symptoms and vital signs
-- ✅ Flags possible high-risk indicators based on patterns
-- ✅ Generates explainable risk summaries in medical context
-- ✅ Supports safer and faster clinical decisions
-- ✅ Keeps the doctor as the final decision authority
+### Our Approach
 
-### Who It's Built For
+Unlike black-box machine learning models, ClinGuard AI uses a **deterministic, rule-based scoring engine** based on established clinical guidelines (AHA blood pressure standards, cardiac risk factors). This ensures:
+- ✅ **Complete transparency** — Every score is explainable
+- ✅ **Reproducibility** — Same input always produces same output
+- ✅ **Educational value** — Clear reasoning helps understand risk factors
+- ✅ **Privacy-first** — No patient data is stored or retained
 
-Primary-care physicians working in:
-- High-volume outpatient clinics
-- Resource-limited healthcare settings
-- Areas with limited specialist access
-- Fast-paced diagnostic environments
+### Current Status (MVP)
 
-### Why Early-Risk Support Matters
+This is a **working prototype** with:
+- ✅ Live backend API deployed on Azure
+- ✅ React-based user interface
+- ✅ Rule-based risk scoring (vitals + symptoms + history)
+- ✅ Natural language explanation generation
+- ✅ Three-tier risk classification (Low/Moderate/High)
 
-In many healthcare systems — particularly in India and similar regions — primary-care doctors face:
+### Important Disclaimer
 
-- **80–100+ patients per day** in a single clinic session
-- **5–10 minutes per patient** on average
-- **Limited access to specialists** for real-time consultation
-- **High cognitive load** leading to potential missed warnings
-
-Early-risk detection for cardiac conditions can be life-saving. ClinGuard AI provides a **second layer of awareness** without disrupting clinical workflow.
-
-### Why This Is a Meaningful Healthcare Solution
-
-- **Real-world problem:** Addresses physician burnout and patient safety simultaneously
-- **High-impact domain:** Cardiovascular disease is a leading cause of preventable mortality
-- **Ethical design:** Transparent AI that augments human judgment, not replaces it
-- **Scalable:** Can expand to other risk domains beyond cardiac screening
+**This is a student research project and educational prototype.** It is NOT a medical device, does NOT provide medical advice, and should NOT be used for actual clinical decision-making. All output is for educational demonstration purposes only.
 
 ---
 
-## 🩺 Problem Statement
+## 📋 Table of Contents
 
-### Challenges Faced by Primary-Care Doctors
-
-1. **Limited Time Per Patient**  
-   Doctors in busy clinics have only a few minutes to assess symptoms, record vitals, and make decisions.
-
-2. **Lack of Specialist Access**  
-   Many clinics operate without on-site cardiologists or diagnostic equipment like ECG/echo.
-
-3. **Risk of Late Diagnosis**  
-   Early warning signs (e.g., subtle chest discomfort, irregular heart rate patterns) can be missed under time pressure.
-
-4. **Cognitive Overload**  
-   Processing dozens of patients daily increases the risk of overlooking high-risk indicators.
-
-5. **No Decision Support Tools**  
-   Most clinics lack structured triage systems or AI-assisted risk screening.
-
-### Why Cardiac Risk Triage Is Important
-
-Cardiac conditions — including heart attacks, arrhythmias, and heart failure — often present with:
-- Non-specific symptoms (fatigue, breathlessness)
-- Subtle vital sign changes
-- Risk factors that need pattern recognition (family history, age, BP trends)
-
-**Early intervention saves lives.** A system that flags potential risk allows doctors to:
-- Refer patients to specialists sooner
-- Order confirmatory tests proactively
-- Monitor at-risk patients more closely
-
-### Why This Scope Is Realistic for MVP
-
-Rather than attempting a full diagnostic AI:
-- We focus on **one high-impact area**: cardiac risk triage
-- We use **simple inputs**: vitals + symptoms (no complex medical imaging)
-- We provide **explainable outputs**: risk level + reasoning
-- We maintain **ethical boundaries**: doctor makes final decisions
-
-This makes ClinGuard AI:
-- Technically feasible for MVP development
-- Clinically meaningful without overstepping AI capabilities
-- Aligned with responsible AI principles
+- [Executive Summary](#-executive-summary)
+- [Problem Statement](#-problem-statement)
+- [Our Solution](#-our-solution)
+- [Medical Disclaimer](#️-medical-disclaimer)
+- [Current Features](#-current-features-prototype-v10)
+- [Architecture](#-system-architecture)
+- [Tech Stack](#-tech-stack)
+- [Live Demo](#-live-demo)
+- [Future Research Directions](#-future-research-directions)
+- [Getting Started](#-getting-started)
 
 ---
 
-## 💡 Solution Summary
+## 🎯 Problem Statement
 
-### How ClinGuard AI Supports Doctors (Without Replacing Them)
+### The Challenge in Primary Care
 
-ClinGuard AI functions as a **clinical co-pilot**, not an autopilot:
+Primary-care doctors worldwide, especially in high-volume clinics, face significant time constraints:
 
-1. **Input Phase**  
-   Doctor enters patient information quickly:
-   - Age, gender, blood pressure, heart rate
-   - Symptom description (text input)
-   - Family history indicators (yes/no checkboxes)
+| Challenge | Reality |
+|-----------|--------|
+| **80-100+ patients/day** | Only 5-10 minutes per patient |
+| **Limited specialist access** | Delayed cardiac risk evaluation |
+| **High cognitive load** | Risk of overlooking subtle symptoms |
+| **No decision support tools** | Reliance solely on experience |
 
-2. **AI Processing Phase**  
-   The system analyzes data using:
-   - **Azure AI Studio / Prompt Flow** → structured risk scoring
-   - **Azure OpenAI** → explainable reasoning generation
+**Research Context:** Cardiovascular disease remains a leading cause of mortality globally (WHO), and early detection during routine primary care visits could potentially improve outcomes. However, time pressure in busy clinics may contribute to diagnostic challenges.
 
-3. **Output Phase**  
-   Doctor receives:
-   - **Risk Level:** Low / Medium / High
-   - **Risk Score:** Confidence percentage
-   - **Explanation Summary:** Medical reasoning in plain language
+### Our Research Question
 
-4. **Decision Phase**  
-   Doctor reviews AI output and decides:
-   - Refer to cardiologist?
-   - Order ECG or blood tests?
-   - Schedule follow-up visit?
-   - Reassure patient and continue observation?
-
-### Role of Explainable AI
-
-**Why explainability matters:**
-- Doctors need to **understand** why AI flagged a risk
-- Black-box AI decisions are not trusted in clinical settings
-- Transparency improves physician confidence in the tool
-- Explainability supports legal and ethical accountability
-
-**How we achieve it:**
-- Azure OpenAI generates human-readable reasoning
-- Output includes symptom-pattern explanations
-- Doctor sees "what triggered the alert" clearly
-
-### Human-in-the-Loop Design
-
-- AI **suggests** risk awareness
-- Doctor **validates** clinical context
-- Doctor **decides** next steps
-- Doctor **remains accountable** for patient care
-
-This aligns with:
-- Medical ethics standards
-- Real-world clinical workflow
-- Regulatory expectations for clinical AI
+Can a transparent, explainable AI system serve as an educational tool to help medical students and practitioners better understand cardiac risk factor assessment patterns?
 
 ---
 
-## 🎯 MVP Scope (What This Version Includes)
+## 💡 Our Solution
 
-### Core Features
+**ClinGuard AI** is an educational prototype that demonstrates explainable AI principles applied to cardiac risk factor analysis.
 
-✅ **Cardiac Risk Screening Only**  
-Focus on heart-related conditions (chest pain, arrhythmia risk, heart failure indicators)
+### Design Philosophy
 
-✅ **Simple Input Interface**  
-Doctors enter vitals + symptoms in under 2 minutes
+✅ **Explainable AI** — Every risk score comes with step-by-step clinical reasoning  
+✅ **Rule-Based Engine** — Deterministic scoring based on published guidelines  
+✅ **Instant Feedback** — Results generated in < 2 seconds  
+✅ **Privacy-First** — No patient data storage or transmission beyond analysis  
+✅ **Educational Focus** — Designed as a learning tool, not a diagnostic system
 
-✅ **AI-Powered Risk Scoring**  
-Azure AI analyzes patterns and assigns risk category
+### What This Prototype Does NOT Do
 
-✅ **Explainable Output**  
-Generated reasoning text helps doctors understand the alert
+❌ Does NOT diagnose diseases  
+❌ Does NOT provide medical advice  
+❌ Does NOT replace clinical judgment  
+❌ Does NOT store patient information  
+❌ Does NOT have regulatory approval for clinical use
 
-✅ **Doctor-Controlled Decisions**  
-System provides recommendations; doctor makes final call
-
-### What This Version Does NOT Include
-
-❌ No automatic diagnosis or prescription suggestions  
-❌ No patient data storage (privacy-safe MVP)  
-❌ No integration with hospital EMR systems (future scope)  
-❌ No support for imaging analysis (CT, MRI, X-rays)  
-❌ No multi-disease diagnosis engine (focused MVP)
-
-### Ethical Constraints & Disclaimers
-
-- System displays clear disclaimer: **"This is a decision support tool. Final diagnosis must be made by a qualified physician."**
-- No medical liability claims
-- No patient identifiable information stored in MVP
-- Compliant with responsible AI principles
+**This is a student research project exploring explainable AI concepts in healthcare education.**
 
 ---
 
-## 🏆 Why This Project Is a Strong Fit for Imagine Cup
+## ⚠️ Medical Disclaimer
 
-### 1. Real-World Healthcare Impact
-- Addresses physician burnout and patient safety
-- Tackles a problem affecting millions of patients globally
-- Demonstrates social good through technology
+### IMPORTANT: Educational Prototype Only
 
-### 2. Responsible AI Design
-- Explainable outputs (not black-box predictions)
-- Human-in-the-loop decision-making
-- Ethical boundaries clearly defined
+**THIS SYSTEM IS NOT A MEDICAL DEVICE AND MUST NOT BE USED FOR CLINICAL DECISION-MAKING.**
 
-### 3. Focused MVP (Not Over-Engineered)
-- Realistic scope for 3–4 month development cycle
-- Demonstrable functionality for judges
-- Clear path to expansion after MVP
+**Limitations:**
+- This is a student research project developed for educational purposes
+- The system has NOT been clinically validated
+- Output is NOT medical advice and should NOT guide treatment decisions
+- No regulatory approval (FDA, CE, etc.) has been sought or obtained
+- The rule-based algorithm uses simplified assumptions and may not reflect individual patient complexity
 
-### 4. Alignment with Health & Life Sciences Category
-- Directly addresses healthcare delivery challenges
-- Uses AI to augment medical professionals
-- Scalable to other clinical domains
+**Intended Use:**
+- Educational demonstration of explainable AI principles
+- Research prototype for Imagine Cup competition
+- Learning tool for understanding cardiac risk factors
 
-### 5. Innovation + Practicality Balance
-- Novel application of Azure AI in clinical workflow
-- Practical enough for real clinic adoption
-- Technically sophisticated yet user-friendly
+**NOT Intended For:**
+- Clinical diagnosis
+- Treatment planning
+- Patient care decisions
+- Use outside educational/research contexts
 
-### 6. Strong Demo Potential
-- Easy to demonstrate with sample patient cases
-- Visually clear UI + explainable outputs
-- Shows AI working in real-time
+All clinical decisions must be made by qualified healthcare professionals using validated tools and comprehensive patient assessment.
 
 ---
 
-## ✅ How We Fulfill Imagine Cup Requirements
+## ✨ Current Features (Prototype v1.0)
 
-| **Requirement** | **How ClinGuard AI Satisfies It** |
-|-----------------|-----------------------------------|
-| **Functional MVP** | Working web app with live AI integration |
-| **Use 2+ Microsoft AI Services** | Azure AI Studio (risk scoring) + Azure OpenAI (explanation) |
-| **AI Must Be Core to Value** | Risk detection and explanation are impossible without AI |
-| **Demonstrate Architecture** | Full system diagram included in pitch deck |
-| **Demo Video Required** | 2-minute product demo showing real patient cases |
-| **Pitch Video Required** | 3-minute pitch explaining problem + solution |
-| **Ethical AI Design** | Explainable AI + human-in-loop + disclaimers |
-| **Scalability Potential** | Can expand to other conditions beyond cardiac risk |
-| **Innovative Use of AI** | Novel application of prompt engineering in clinical context |
+### 🩺 Patient Data Input Interface
+- Age, gender, vital signs (blood pressure, heart rate)
+- Free-text symptom description
+- Family history of cardiac disease
+- Client-side input validation
 
-### Why Judges Will Value This Project
+### 🧠 Rule-Based Risk Scoring Engine
 
-✅ **Clear problem-solution fit:** Doctors face real challenges; we provide a real tool  
-✅ **Meaningful use of Azure AI:** Not a superficial integration — AI is the core engine  
-✅ **Responsible AI principles:** Transparency, accountability, human oversight  
-✅ **Healthcare category alignment:** High-impact domain with life-saving potential  
-✅ **Demo-ready MVP:** Functional, testable, visually compelling  
-✅ **Scalable vision:** Cardiac risk is Phase 1; roadmap shows expansion potential
+**Weighted Scoring Formula:**
+```
+Total Risk Score = (Vitals × 50%) + (Symptoms × 30%) + (History × 20%)
+```
+
+**Scoring Components:**
+
+1. **Blood Pressure Analysis** (0-30 points)
+   - Based on American Heart Association guidelines
+   - Categories: Normal, Elevated, Stage 1/2 Hypertension, Crisis
+   
+2. **Heart Rate Assessment** (0-20 points)
+   - Bradycardia (<60 bpm), Normal (60-100), Tachycardia (>100)
+   - Context-aware scoring
+   
+3. **Age Risk Factor** (0-20 points)
+   - Progressive scoring reflecting epidemiological patterns
+   
+4. **Symptom Keyword Analysis** (0-25 points)
+   - Pattern matching for cardiac-related terms
+   - Severity classification: HIGH/MODERATE/LOW
+   
+5. **Family History** (0-15 points)
+   - Binary factor for genetic predisposition
+
+### 📊 Three-Tier Risk Classification
+
+- **🟢 Low Risk (0-30 points)** — Routine monitoring suggested
+- **🟡 Moderate Risk (31-65 points)** — Follow-up within 1-2 weeks
+- **🔴 High Risk (66-100 points)** — Urgent evaluation recommended
+
+### 📝 Explainable Output
+
+- Step-by-step score breakdown
+- Identified symptom keywords
+- Clinical reasoning narrative
+- Recommended next steps
+- Safety disclaimer
+
+### 🎨 User Interface
+
+- Clean, professional design
+- Color-coded risk indicators
+- Mobile-responsive layout
+- Accessibility features
 
 ---
 
-## 🏗️ Architecture & Workflow (End-to-End Flow)
+## 🏗️ System Architecture
 
-### System Architecture Diagram
+### High-Level Architecture
 
 ```
 ┌─────────────────────────────────────────────────────────────┐
-│                     DOCTOR (User)                           │
-│              Primary-Care Physician in Clinic               │
-└────────────────────────┬────────────────────────────────────┘
-                         │
-                         │ Enters patient data
-                         ▼
-┌─────────────────────────────────────────────────────────────┐
-│                  FRONTEND (React Web App)                   │
-│  • Patient Input Form (vitals + symptoms)                  │
-│  • Risk Display Screen                                      │
-│  • Explainability Output                                    │
-└────────────────────────┬────────────────────────────────────┘
-                         │
-                         │ HTTP POST /analyze-risk
-                         ▼
-┌─────────────────────────────────────────────────────────────┐
-│              BACKEND (Node.js + Express API)                │
-│              Hosted on Azure App Service                    │
-│  • Receives patient data                                    │
-│  • Validates inputs                                         │
-│  • Calls Azure AI services                                  │
-│  • Combines AI outputs                                      │
-│  • Returns structured JSON response                         │
-└──────────────┬──────────────────────┬───────────────────────┘
-               │                      │
-               │                      │
-    ┌──────────▼──────────┐  ┌────────▼──────────┐
-    │  Azure AI Studio    │  │   Azure OpenAI    │
-    │   (Prompt Flow)     │  │   (GPT-4 Model)   │
-    │                     │  │                   │
-    │ • Risk Scoring      │  │ • Explanation     │
-    │ • Category Output   │  │   Generation      │
-    │ • Confidence %      │  │ • Reasoning Text  │
-    └──────────┬──────────┘  └────────┬──────────┘
-               │                      │
-               └──────────┬───────────┘
-                          │
-                  Combined Response
-                          │
-                          ▼
-┌─────────────────────────────────────────────────────────────┐
-│                    OUTPUT TO DOCTOR                         │
-│  • Risk Level: Low / Medium / High                          │
-│  • Risk Score: 78%                                          │
-│  • Explanation: "Patient shows elevated BP..."              │
-│  • Disclaimer: "Final decision remains with physician"      │
+│                         USER INTERFACE                        │
+│              (React + TypeScript + Vite)                      │
+│  ┌──────────────┐  ┌──────────────┐  ┌──────────────┐      │
+│  │ Patient Form │  │ Risk Results │  │  Disclaimer  │       │
+│  └──────────────┘  └──────────────┘  └──────────────┘      │
 └─────────────────────────────────────────────────────────────┘
+                            │ HTTPS/JSON
+                            ▼
+┌─────────────────────────────────────────────────────────────┐
+│                     BACKEND API SERVER                        │
+│              (Node.js + Express + Azure)                      │
+│  ┌──────────────┐  ┌──────────────┐  ┌──────────────┐      │
+│  │  Validation  │→ │  Controller  │→ │Error Handler │       │
+│  └──────────────┘  └──────────────┘  └──────────────┘      │
+└─────────────────────────────────────────────────────────────┘
+                            │
+            ┌───────────────┼───────────────┐
+            ▼               ▼               ▼
+    ┌──────────────┐ ┌──────────────┐ ┌──────────────┐
+    │ Risk Engine  │ │Text Analytics│ │  Validation  │
+    │   Service    │ │   Service    │ │   Service    │
+    └──────────────┘ └──────────────┘ └──────────────┘
 ```
 
-### Step-by-Step Workflow
+### Data Flow Diagram (DFD)
 
-**Step 1: Doctor Opens Web App**  
-Doctor navigates to ClinGuard AI web interface during patient consultation.
-
-**Step 2: Doctor Enters Patient Data**  
-Input form collects:
-- Age (number)
-- Gender (dropdown)
-- Blood Pressure (systolic/diastolic)
-- Heart Rate (bpm)
-- Symptoms (text description)
-- Family history of cardiac disease (yes/no)
-
-**Step 3: Frontend Sends Data to Backend**  
-React app makes POST request to backend API endpoint `/analyze-risk` with JSON payload.
-
-**Step 4: Backend Validates Input**  
-Node.js server checks:
-- All required fields present
-- Numeric values in valid ranges
-- Text input not empty
-
-**Step 5: Backend Calls Azure AI Studio**  
-Sends structured prompt to Prompt Flow deployment:
-- Input: Patient vitals + symptoms
-- Output: Risk category (Low/Medium/High) + confidence score
-
-**Step 6: Backend Calls Azure OpenAI**  
-Sends same data to GPT-4 model:
-- Input: Patient data + risk score
-- Output: Explainable reasoning text
-
-**Step 7: Backend Combines Outputs**  
-Merges both AI responses into single JSON:
-```json
-{
-  "riskLevel": "Medium",
-  "riskScore": 68,
-  "explanation": "Patient presents with elevated blood pressure..."
-}
+#### Level 0: Context Diagram
+```
+                    ┌───────────────┐
+                    │  Primary Care │
+                    │    Doctor     │
+                    └───────┬───────┘
+                            │
+                    Patient Data Input
+                            │
+                            ▼
+                    ┌───────────────┐
+                    │  ClinGuard AI │
+                    │    System     │
+                    └───────┬───────┘
+                            │
+                    Risk Assessment Report
+                            │
+                            ▼
+                    ┌───────────────┐
+                    │     Doctor    │
+                    │  (Decision)   │
+                    └───────────────┘
 ```
 
-**Step 8: Frontend Displays Results**  
-Doctor sees:
-- Visual risk indicator (color-coded)
-- Risk percentage
-- Explanation summary
-- Disclaimer text
+#### Level 1: Risk Analysis Process
+```
+┌──────────────┐
+│Patient Data  │
+│(Age, BP, HR, │──────┐
+│Symptoms, etc)│      │
+└──────────────┘      │
+                      ▼
+              ┌────────────────┐
+              │ 1. Validation  │
+              │    Service     │
+              └────────┬───────┘
+                       │ Valid Data
+                       ▼
+              ┌────────────────┐       ┌──────────────┐
+              │ 2. Risk Engine │◄──────│ Clinical     │
+              │    Service     │       │ Guidelines   │
+              └────────┬───────┘       └──────────────┘
+                       │
+         ┌─────────────┼─────────────┐
+         │             │             │
+         ▼             ▼             ▼
+┌──────────────┐ ┌──────────┐ ┌──────────┐
+│Score Vitals  │ │  Score   │ │  Score   │
+│  (50%)       │ │Symptoms  │ │ History  │
+│              │ │  (30%)   │ │  (20%)   │
+└──────┬───────┘ └────┬─────┘ └────┬─────┘
+       │              │            │
+       └──────────────┼────────────┘
+                      │ Total Score
+                      ▼
+              ┌────────────────┐
+              │ 3. Text        │
+              │  Analytics     │
+              └────────┬───────┘
+                       │ + Explanation
+                       ▼
+              ┌────────────────┐
+              │ 4. Risk Report │
+              │   Generation   │
+              └────────┬───────┘
+                       │
+                       ▼
+              ┌────────────────┐
+              │ Risk Results   │
+              │ + Explanation  │
+              │ + Recommendations│
+              └────────────────┘
+```
 
-**Step 9: Doctor Makes Decision**  
-Based on AI output + clinical judgment, doctor decides:
-- Refer to specialist
-- Order tests
-- Schedule follow-up
-- Reassure patient
+### Component Architecture
+
+**Frontend:**
+```
+frontend/src/
+├── components/
+│   ├── PatientForm.tsx      # Data collection
+│   ├── RiskResults.tsx      # Results display
+│   └── Disclaimer.tsx       # Legal notice
+├── pages/
+│   ├── Home.tsx             # Landing page
+│   └── Analysis.tsx         # Main analysis page
+├── services/
+│   └── api.ts               # Backend communication
+└── App.tsx                  # Router & layout
+```
+
+**Backend:**
+```
+backend/src/
+├── routes/
+│   └── analysis.js          # API endpoints
+├── controllers/
+│   └── analysisController.js # Business logic
+├── services/
+│   ├── riskEngineService.js  # Risk calculation
+│   ├── textAnalyticsService.js # NLP & explanation
+│   └── validation.js         # Input validation
+├── middleware/
+│   └── errorHandler.js       # Error handling
+└── index.js                  # Server entry point
+```
 
 ---
 
-## 🛠️ Tech Stack (Explanation & Rationale)
+## 🛠️ Tech Stack
 
 ### Frontend
-
-**Technology:** React (Vite build tool)  
-**Why chosen:**
-- ✅ Fast development with component-based architecture
-- ✅ Simple, doctor-friendly UI without complexity
-- ✅ Easy integration with backend REST API
-- ✅ Responsive design for tablets/laptops used in clinics
-- ✅ Lightweight and fast-loading for real-world clinic networks
-
-**Key Libraries:**
-- React (UI framework)
-- Axios (HTTP requests)
-- CSS Modules (styling)
+- **React 19.2.0** — UI framework
+- **TypeScript** — Type safety
+- **Vite 7.2.4** — Build tool & dev server
+- **Axios** — HTTP client
+- **React Router** — Navigation
 
 ### Backend
+- **Node.js 20 LTS** — Runtime
+- **Express 4.18.2** — Web framework
+- **CORS** — Cross-origin support
+- **ES Modules** — Modern JavaScript
 
-**Technology:** Node.js + Express  
-**Why chosen:**
-- ✅ Stable REST API development
-- ✅ Easy deployment to Azure App Service
-- ✅ Smooth integration with Azure AI SDKs
-- ✅ Fast JSON processing for AI requests
-- ✅ Widely supported and documented
+### Deployment
+- **Azure App Service** — Backend hosting (Linux B1 tier)
+- **Vercel** — Frontend hosting (planned)
+- **GitHub** — Version control & CI/CD
 
-**Key Libraries:**
-- Express (API framework)
-- Axios (Azure AI service calls)
-- dotenv (environment variable management)
-- cors (cross-origin requests from frontend)
-
-### Cloud Hosting
-
-**Technology:** Azure App Service  
-**Why chosen:**
-- ✅ Production-grade hosting environment
-- ✅ Native integration with Azure AI services
-- ✅ Auto-scaling for demo traffic
-- ✅ HTTPS support out-of-the-box
-- ✅ Easy deployment from VS Code
-
-### Development Tools
-
-**Technology:** VS Code + Microsoft Copilot + GitHub  
-**Why chosen:**
-- ✅ Industry-standard IDE with AI assistance
-- ✅ GitHub for version control and collaboration
-- ✅ Direct Azure deployment from VS Code
-- ✅ Imagine Cup encourages Microsoft tooling
-
-### Why This Stack Works for MVP
-
-✅ **Fast development:** React + Node.js are quick to prototype  
-✅ **Easy deployment:** Azure App Service simplifies hosting  
-✅ **Stable and reliable:** Production-ready technologies  
-✅ **Beginner-friendly:** Team can learn quickly  
-✅ **Demo-ready:** Works smoothly in live presentations
+### Development
+- **ESLint** — Code quality
+- **TypeScript ESLint** — Type checking
+- **VS Code** — IDE
 
 ---
 
-## 🧠 Azure AI Services Used (Imagine Cup Core Requirement)
+## 🌐 Live Demo
 
-Imagine Cup requires **at least TWO Microsoft AI services that are core to the solution value.**  
-ClinGuard AI uses both in meaningful, essential ways:
+### Backend API (Production)
+🔗 **Base URL:** `https://clinguard-backend-api-ftemg2ddaca3c4d0.centralindia-01.azurewebsites.net`
 
----
+**Endpoints:**
+- `GET /api/health` — Server health check
+- `POST /api/analyze-risk` — Risk analysis
 
-### Service 1: Azure AI Studio / Prompt Flow
-
-**Purpose:** Structured Risk Scoring and Category Classification
-
-**How It Works:**
-- We design a prompt flow that takes patient vitals + symptoms as input
-- The AI model analyzes patterns and assigns:
-  - Risk Level: Low / Medium / High
-  - Confidence Score: 0–100%
-- Output is structured JSON for reliable parsing
-
-**Why This Service Is Core:**
-- Risk scoring is the primary function of the system
-- Without AI pattern recognition, doctors would manually assess each case
-- Prompt Flow ensures consistent, controlled AI behavior
-- Prevents hallucination by constraining outputs
-
-**Example Input:**
-```json
-{
-  "age": 58,
-  "bp": "160/95",
-  "heartRate": 92,
-  "symptoms": "chest discomfort, shortness of breath",
-  "familyHistory": true
-}
+**Example Request:**
+```bash
+curl -X POST https://clinguard-backend-api-ftemg2ddaca3c4d0.centralindia-01.azurewebsites.net/api/analyze-risk \
+  -H "Content-Type: application/json" \
+  -d '{
+    "age": 55,
+    "gender": "Male",
+    "systolicBP": 160,
+    "diastolicBP": 95,
+    "heartRate": 110,
+    "symptoms": "chest pain and shortness of breath",
+    "familyHistory": true
+  }'
 ```
 
-**Example Output:**
+**Example Response:**
 ```json
 {
+  "success": true,
   "riskLevel": "High",
-  "riskScore": 82
+  "riskScore": 78,
+  "explanation": "Patient presents with significantly elevated blood pressure...",
+  "clinicalFlags": [
+    "Elevated Blood Pressure (Stage 2)",
+    "Tachycardia",
+    "Age >50",
+    "Family History Present",
+    "Chest Symptoms Detected"
+  ],
+  "recommendedAction": "Urgent specialist evaluation recommended..."
 }
 ```
 
-**Why It Matters:**
-- Provides medical-grade structured decision support
-- Avoids black-box AI decisions
-- Enables reliable integration with frontend
+### Frontend (Coming Soon)
+🔗 **URL:** To be deployed on Vercel
 
 ---
 
-### Service 2: Azure OpenAI (GPT-4)
+## 🚀 Future Research Directions
 
-**Purpose:** Explainable Reasoning Generation
+### Possible Phase 1 Enhancements (Exploration)
 
-**How It Works:**
-- We send patient data + risk score to GPT-4
-- AI generates human-readable medical reasoning
-- Output explains **why** the risk was flagged
-- Text is doctor-friendly and context-aware
+- [ ] **User Authentication System**
+  - Research secure login patterns
+  - Explore role-based access models
+  - Study session management approaches
+  
+- [ ] **Extended Feature Ideas**
+  - Multi-language interface exploration
+  - Voice input accessibility research
+  - Offline mode for low-connectivity environments
 
-**Why This Service Is Core:**
-- Explainability is essential for clinical AI adoption
-- Doctors will not trust a "black-box score" without reasoning
-- Generated text improves physician confidence in the tool
-- Supports ethical AI transparency principles
+### Potential Phase 2 Integration Studies
 
-**Example Input:**
+- [ ] **Healthcare System Integration Research**
+  - Study HL7 FHIR standards
+  - Explore EHR compatibility patterns
+  - Research clinical workflow integration
+  
+- [ ] **Analytics Exploration**
+  - Investigate aggregate risk trend visualization
+  - Study pattern recognition approaches
+
+### Possible Phase 3: ML Enhancement Research
+
+**Current Status:** The prototype uses rule-based logic only. Machine learning integration is purely speculative future research.
+
+**If Future Resources Allow:**
+- Explore collaboration opportunities with medical institutions (IRB approval required)
+- Research anonymized cardiac outcome datasets (MIMIC-III, UK Biobank)
+- Investigate explainable ML models (Random Forest + SHAP values)
+- Study hybrid approaches (rule-based + ML consensus)
+
+**Planned Research Approach (Hypothetical):**
+```python
+# Conceptual ML Pipeline (NOT IMPLEMENTED)
+from sklearn.ensemble import RandomForestClassifier
+import shap
+
+# Would require 10,000+ labeled cardiac outcome records
+# model = RandomForestClassifier(n_estimators=100)
+# model.fit(X_train, y_cardiac_events)
+
+# Explainability via SHAP values
+# explainer = shap.TreeExplainer(model)
+# shap_values = explainer.shap_values(patient_data)
+
+# Deployment: Azure Functions as REST API
+# Node.js backend would call Python service
+# Final score: hybrid (ML + rule-based consensus)
 ```
-Patient: 58-year-old male, BP 160/95, HR 92 bpm, reports chest discomfort and shortness of breath, family history of cardiac disease. Risk score: 82% (High).
-Generate a brief clinical explanation.
-```
 
-**Example Output:**
-```
-"Patient presents with elevated blood pressure (stage 2 hypertension) and tachycardia. Symptoms of chest discomfort combined with shortness of breath are concerning for potential cardiac ischemia. Positive family history further increases risk. Recommend ECG and cardiology referral."
-```
+**Critical Requirements for ML Implementation:**
+- ✅ Institutional Review Board (IRB) approval
+- ✅ Patient consent for de-identified data usage
+- ✅ Partnership with accredited medical institutions
+- ✅ Clinical validation studies
+- ✅ Regulatory consultation (FDA/CE if applicable)
+- ✅ Peer-reviewed publication of methodology
 
-**Why It Matters:**
-- Builds trust with physicians
-- Enables informed decision-making
-- Differentiates from simple rule-based systems
-- Supports medical-legal accountability
+**Timeline:** No specific timeline — dependent on future funding, partnerships, and regulatory guidance.
+
+### Phase 4: Long-Term Vision (Speculative)
+
+**Possible Future Directions (Not Planned):**
+- Multi-condition risk assessment research
+- Mobile application prototypes
+- Clinical trial participation (if opportunities arise)
+- Regional deployment studies in underserved areas
+
+**Important Note:** All future phases are exploratory ideas only. No commitments, partnerships, or clinical validations are currently in place or guaranteed.
 
 ---
 
-### How Both Services Work Together
-
-1. **Azure AI Studio** → Provides **structured risk assessment** (quantitative)
-2. **Azure OpenAI** → Provides **explainable reasoning** (qualitative)
-3. **Combined Output** → Gives doctors **actionable insights**
-
-This dual-AI approach ensures:
-- ✅ Reliability (structured scoring)
-- ✅ Transparency (explainable reasoning)
-- ✅ Clinical trust (both quantitative + qualitative outputs)
-
-### Why This Satisfies Imagine Cup AI Requirements
-
-✅ **Two distinct Microsoft AI services**  
-✅ **Both are core to solution value** (not optional add-ons)  
-✅ **AI is not a gimmick** — it drives the entire workflow  
-✅ **Meaningful integration** — not just a chatbot feature
-
----
-
-## 💳 $100 Azure for Students Credit — How to Activate
-
-Microsoft provides **$100 free Azure credits for students** (no credit card required).  
-This is enough to develop and demo ClinGuard AI MVP.
-
-### Step-by-Step Activation Guide
-
-**Step 1: Verify Student Status**  
-- Sign in to Azure Portal: [https://azure.microsoft.com/en-us/free/students/](https://azure.microsoft.com/en-us/free/students/)
-- Use your school email address (e.g., `yourname@university.edu`)
-
-**Step 2: Activate Azure for Students**  
-- Click "Activate now"
-- Follow verification steps (may require student ID upload)
-- No credit card required
-
-**Step 3: Access Free Services**  
-Your $100 credit can be used for:
-- Azure AI Studio (Prompt Flow deployments)
-- Azure OpenAI Service (GPT-4 API calls)
-- Azure App Service (backend hosting)
-- Azure Storage (if needed later)
-
-**Step 4: Set Up Cost Alerts**  
-- Go to "Cost Management + Billing"
-- Set budget alert at $50 and $75 to avoid surprises
-
-**Step 5: Use Free Tiers Where Possible**  
-- Many services have free tiers for development
-- Azure OpenAI has pay-per-use pricing (very low for MVP testing)
-
-### Credit Usage Estimates for MVP Development
-
-| Service | Estimated Monthly Cost |
-|---------|------------------------|
-| Azure App Service (Free Tier) | $0 |
-| Azure AI Studio (Testing) | $10–20 |
-| Azure OpenAI (GPT-4 calls) | $15–30 |
-| **Total** | **~$30–50/month** |
-
-**$100 credit = 2–3 months of full development + demo testing**
-
----
-
-## 🚀 How to Run the Project (Developer Guide)
+## 🏃 Getting Started
 
 ### Prerequisites
+- Node.js 20+ LTS
+- npm or yarn
+- Git
 
-Before running the project, ensure you have:
-- ✅ Node.js (v18 or higher) installed
-- ✅ npm (comes with Node.js)
-- ✅ Git installed
-- ✅ VS Code (recommended)
-- ✅ Azure account with activated credits
-
-### Clone the Repository
+### Backend Setup
 
 ```bash
-git clone https://github.com/your-username/clinguardai.git
-cd clinguardai
-```
+# Clone repository
+git clone https://github.com/yourusername/clinguardai.git
+cd clinguardai/backend
 
----
-
-### Frontend Setup (React)
-
-**Step 1: Navigate to Frontend Directory**
-```bash
-cd frontend
-```
-
-**Step 2: Install Dependencies**
-```bash
+# Install dependencies
 npm install
+
+# Set environment variables
+echo "PORT=8000" > .env
+echo "NODE_ENV=development" >> .env
+
+# Start server
+npm start
+# Server running at http://localhost:8000
 ```
 
-**Step 3: Run Development Server**
+### Frontend Setup
+
 ```bash
+cd ../frontend
+
+# Install dependencies
+npm install
+
+# Start development server
 npm run dev
+# Open http://localhost:5173
 ```
 
-Frontend will open at: `http://localhost:5173`
+### Build for Production
 
----
-
-### Backend Setup (Node.js + Express)
-
-**Step 1: Navigate to Backend Directory**
 ```bash
+# Frontend
+cd frontend
+npm run build
+# Output in dist/
+
+# Backend (no build needed)
 cd backend
-```
-
-**Step 2: Install Dependencies**
-```bash
-npm install
-```
-
-**Step 3: Create Environment Variables**
-
-Create a `.env` file in the `backend` directory:
-
-```env
-# Azure AI Studio
-AZURE_AI_ENDPOINT=https://your-ai-studio.cognitiveservices.azure.com/
-AZURE_AI_KEY=your-ai-studio-key
-AZURE_AI_DEPLOYMENT=your-prompt-flow-deployment-name
-
-# Azure OpenAI
-AZURE_OPENAI_ENDPOINT=https://your-openai.openai.azure.com/
-AZURE_OPENAI_KEY=your-openai-key
-AZURE_OPENAI_DEPLOYMENT=your-gpt4-deployment-name
-
-# Server Config
-PORT=3000
-```
-
-**Step 4: Run Backend Server**
-```bash
 npm start
 ```
 
-Backend will run at: `http://localhost:3000`
+### Testing
 
----
+```bash
+# Frontend
+cd frontend
+npm run lint      # ESLint check
+npm run build     # TypeScript check
 
-### Testing the Full System
-
-1. **Start Backend** (Terminal 1):
-   ```bash
-   cd backend
-   npm start
-   ```
-
-2. **Start Frontend** (Terminal 2):
-   ```bash
-   cd frontend
-   npm run dev
-   ```
-
-3. **Open Browser**  
-   Navigate to `http://localhost:5173`
-
-4. **Test with Sample Patient**  
-   - Enter age: 58
-   - Enter BP: 160/95
-   - Enter HR: 92
-   - Enter symptoms: "chest pain, shortness of breath"
-   - Check family history: Yes
-   - Click "Analyze Risk"
-
-5. **Verify Output**  
-   You should see:
-   - Risk Level (e.g., "High")
-   - Risk Score (e.g., 82%)
-   - Explanation text
-
----
-
-### Deployment to Azure
-
-**Step 1: Deploy Backend to Azure App Service**
-
-From VS Code:
-1. Install "Azure App Service" extension
-2. Right-click `backend` folder
-3. Select "Deploy to Web App"
-4. Follow prompts to create new App Service
-5. Note the deployed URL (e.g., `https://clinguardai-backend.azurewebsites.net`)
-
-**Step 2: Update Frontend API URL**
-
-In `frontend/src/config.js`:
-```javascript
-export const API_URL = "https://clinguardai-backend.azurewebsites.net";
+# Test backend API
+curl http://localhost:8000/api/health
 ```
 
-**Step 3: Deploy Frontend**
+---
 
-Option A: Netlify / Vercel (free static hosting)  
-Option B: Azure Static Web Apps
+## 📊 Project Scope & Impact
+
+### Current Prototype Status
+
+**Technical Achievements:**
+- ✅ Backend API deployed on Azure App Service
+- ✅ Rule-based risk scoring engine (deterministic)
+- ✅ Response time < 2 seconds
+- ✅ No data persistence (privacy-preserving)
+- ✅ Explainable output generation
+
+**Educational Goals:**
+- Demonstrate explainable AI principles
+- Showcase rule-based deterministic systems
+- Explore healthcare AI ethics and safety
+- Contribute to AI transparency discussion
+
+### Research Impact Vision
+
+**Short-Term (Competition Phase):**
+- 🎯 Demonstrate working prototype at Imagine Cup
+- 🎯 Gather feedback from judges and mentors
+- 🎯 Refine technical approach based on insights
+- 🎯 Document lessons learned
+
+**Long-Term (Exploration Only):**
+- 🌍 Potential collaboration opportunities with academic institutions
+- 💡 Possible application to other clinical education domains
+- 🏥 Explore partnerships for real-world validation studies
+- 📚 Consider publication in student research venues
+
+**Important Context:** This is a student innovation project. Impact goals are aspirational and depend on future resources, partnerships, and validation that are not currently secured.
 
 ---
 
-## 📹 Submission Requirements for Imagine Cup MVP Round
+## 🏆 Imagine Cup 2026 Alignment
 
-To submit ClinGuard AI to Imagine Cup, you need:
+### UN Sustainable Development Goals
 
-### 1. Pitch Deck (PowerPoint / PDF)
+This project explores solutions relevant to:
+- **SDG 3:** Good Health & Well-Being (early risk awareness education)
+- **SDG 9:** Industry, Innovation, Infrastructure (explainable AI research)
+- **SDG 10:** Reduced Inequalities (accessible technology for resource-limited settings)
 
-**Maximum:** 15 slides  
-**Must include:**
-- Problem statement
-- Solution overview
-- System architecture diagram
-- Azure AI services used (show how they integrate)
-- MVP functionality
-- Demo screenshots
-- Team introduction
-- Impact metrics (potential lives saved, doctor time saved)
+### Microsoft Technologies Used
 
-**Tips:**
-- Use visuals (diagrams, screenshots, icons)
-- Keep text minimal
-- Focus on "why this matters" + "how we built it"
+- ✅ **Azure App Service** — Backend hosting (Node.js on Linux)
+- ✅ **GitHub** — Version control and collaboration
+- ✅ **VS Code** — Development environment
 
----
+### Innovation Highlights
 
-### 2. Pitch Video (3 minutes)
+1. **Explainable AI** — Transparent, auditable decision-making process
+2. **Rule-Based Determinism** — Reproducible results, no black-box mystery
+3. **Privacy-First Design** — No data storage or retention
+4. **Educational Focus** — Learning tool, not replacement for judgment
+5. **Open Methodology** — Full source code and logic documentation
 
-**Content:**
-- Introduce the problem (30 sec)
-- Explain the solution (1 min)
-- Show architecture + tech stack (45 sec)
-- Explain impact + scalability (45 sec)
+### Project Uniqueness
 
-**Format:**
-- MP4 video file
-- 1920x1080 resolution (Full HD)
-- Clear audio (use good microphone)
-
-**Tips:**
-- Practice multiple times
-- Use slides + voiceover (no need to show face if not comfortable)
-- Focus on storytelling (problem → solution → impact)
-
----
-
-### 3. Product Demo Video (2 minutes)
-
-**Content:**
-- Show the web app interface (5 sec)
-- Enter sample patient data (20 sec)
-- Click "Analyze Risk" (5 sec)
-- Show AI output (risk level + explanation) (30 sec)
-- Explain what happens behind the scenes (Azure AI calls) (30 sec)
-- Show doctor decision flow (20 sec)
-- End with disclaimer screen (10 sec)
-
-**Format:**
-- MP4 video file
-- Screen recording (use OBS Studio or similar)
-- Clear narration explaining each step
-
-**Tips:**
-- Use a "high-risk" sample patient (more dramatic for demo)
-- Highlight the explainability feature
-- Show Azure AI services in action (if possible, show logs/API calls)
-
----
-
-### 4. Functional MVP Demonstration
-
-**Judges will check:**
-- Does the web app load?
-- Can users enter data?
-- Does the backend call Azure AI services?
-- Is the output explainable and meaningful?
-- Is the system demo-ready (not just mockups)?
-
-**What to prepare:**
-- Public URL for live demo (deployed backend + frontend)
-- Sample patient cases (low, medium, high risk)
-- Backup video in case of live demo issues
-
----
-
-### 5. GitHub Repository (Optional but Recommended)
-
-**Include:**
-- Clean, organized code
-- This README.md file
-- Architecture diagrams
-- Setup instructions
-- Environment variable templates
-
-**Why:**
-- Shows technical depth
-- Helps judges understand implementation
-- Demonstrates software engineering practices
-
----
-
-## ⚖️ Ethical & Responsible AI Notes
-
-ClinGuard AI is designed with **responsible AI principles** at its core.
-
-### What ClinGuard AI Does NOT Do
-
-❌ **Does NOT diagnose diseases**  
-The system flags risk patterns — it does not provide final diagnoses.
-
-❌ **Does NOT replace doctors**  
-Final clinical decisions remain with the physician.
-
-❌ **Does NOT store patient data** (in MVP)  
-Privacy-first design; no patient identifiable information saved.
-
-❌ **Does NOT suggest treatments or medications**  
-Only provides risk awareness alerts.
-
-### What ClinGuard AI DOES Do
-
-✅ **Provides decision support**  
-Helps doctors notice patterns they might miss under time pressure.
-
-✅ **Maintains transparency**  
-Explains why a risk was flagged (explainable AI).
-
-✅ **Keeps humans in control**  
-Doctor has full authority to accept, reject, or override AI suggestions.
-
-✅ **Displays clear disclaimers**  
-Every output includes: *"This is a clinical support tool. Final diagnosis and treatment decisions must be made by a qualified physician."*
-
-### Bias & Responsibility Awareness
-
-**Potential AI Bias Risks:**
-- Training data may not represent all demographics equally
-- AI may overweight certain symptom patterns based on training distribution
-
-**Our Mitigation Strategies:**
-- Use diverse prompt engineering to reduce bias
-- Include disclaimer that AI is a support tool, not authority
-- Encourage doctors to use clinical judgment alongside AI output
-- Plan for future clinical validation studies
-
-### Legal & Regulatory Considerations
-
-- ClinGuard AI MVP is a **prototype for educational/demo purposes**
-- NOT approved for clinical use in regulated healthcare settings
-- Before real-world deployment, we would need:
-  - Clinical validation trials
-  - Regulatory approvals (e.g., FDA, CE marking)
-  - Medical liability insurance
-  - HIPAA compliance (in USA) or equivalent data protection laws
-
-### Ethical AI Checklist (Microsoft Responsible AI Principles)
-
-| Principle | How ClinGuard AI Complies |
-|-----------|---------------------------|
-| **Fairness** | Explainable outputs allow bias detection |
-| **Reliability & Safety** | Doctor validates all AI outputs |
-| **Privacy & Security** | No patient data stored in MVP |
-| **Inclusiveness** | Designed for resource-limited settings |
-| **Transparency** | AI reasoning is shown to users |
-| **Accountability** | Doctor remains legally responsible |
-
----
-
-## 🔮 Future Scope / Phase-2 Expansion
-
-ClinGuard AI MVP focuses on **cardiac risk triage** as a proof-of-concept.  
-Future phases could expand to:
-
-### Phase 2: Multi-Condition Risk Modules
-
-**Expand beyond cardiac risk to include:**
-- Diabetes risk screening (HbA1c trends, family history)
-- Stroke risk assessment (BP, age, lifestyle factors)
-- Respiratory condition alerts (COPD, asthma exacerbation risk)
-
-**Why realistic:**
-- Same architecture; just add new prompt flows
-- Reuse frontend/backend infrastructure
-
----
-
-### Phase 3: Clinical Analytics Dashboard
-
-**Add features for clinic administrators:**
-- Daily risk statistics (how many high-risk patients flagged)
-- Trend analysis (compare weekly/monthly patterns)
-- Doctor performance insights (accuracy of AI vs. actual outcomes)
-
-**Why valuable:**
-- Helps clinics measure impact
-- Supports quality improvement initiatives
-
----
-
-### Phase 4: Hospital EMR Integration
-
-**Integrate with existing Electronic Medical Record systems:**
-- Auto-fill patient vitals from EMR
-- Save AI outputs back to patient record
-- Reduce manual data entry
-
-**Why challenging:**
-- Requires HIPAA/data protection compliance
-- Needs partnerships with EMR vendors (e.g., Epic, Cerner)
-- Security and privacy audits required
-
----
-
-### Phase 5: Clinical Validation Partnerships
-
-**Collaborate with hospitals/research institutions:**
-- Conduct prospective clinical trials
-- Measure AI accuracy against specialist diagnosis
-- Publish results in medical journals
-
-**Why critical:**
-- Required for regulatory approval
-- Builds credibility with medical community
-- Enables real-world deployment
-
----
-
-### Phase 6: Mobile App for Doctors
-
-**Develop iOS/Android version:**
-- Use during home visits or rural clinics
-- Offline mode for low-connectivity areas
-- Voice input for faster symptom entry
-
-**Why impactful:**
-- Expands reach to mobile-first regions
-- Improves usability in resource-limited settings
-
----
-
-### Phase 7: Multi-Language Support
-
-**Add support for:**
-- Hindi, Tamil, Telugu, Bengali (India)
-- Spanish (Latin America)
-- French (Africa)
-
-**Why necessary:**
-- Many doctors in non-English-speaking regions
-- Improves global scalability
-
----
-
-## 🤝 Team & Collaboration
-
-**Project Lead:** Mohil  
-**Development Stack:** React + Node.js + Azure AI  
-**Development Environment:** VS Code + GitHub Copilot  
-**Target Competition:** Imagine Cup 2026 (MVP Round)  
-
-**Collaboration Tools:**
-- GitHub: Version control & code sharing
-- Microsoft Teams: Team communication
-- Azure Portal: Cloud service management
-
----
-
-## 📞 Contact & Support
-
-For questions, feedback, or collaboration inquiries:
-- **Email:** [your-email@example.com]
-- **GitHub:** [github.com/your-username/clinguardai]
-- **Imagine Cup Profile:** [link to your Imagine Cup team page]
+Unlike many healthcare AI projects that use opaque deep learning models, ClinGuard AI prioritizes **explainability and educational value**. Every score can be manually verified, making it ideal for teaching clinical risk factor assessment concepts.
 
 ---
 
 ## 📄 License
 
-This project is developed for **Imagine Cup 2026** educational purposes.  
-For real-world clinical deployment, regulatory approval and clinical validation are required.
+This project is licensed under the MIT License.
 
 ---
 
 ## 🙏 Acknowledgments
 
-- **Microsoft Azure AI Team** for free student credits and AI services
-- **Imagine Cup Organizers** for creating this opportunity
-- **Primary-care physicians** who inspired this problem statement
-- **Open-source community** for React, Node.js, and supporting libraries
+- **American Heart Association** — Blood pressure guidelines
+- **WHO** — Cardiovascular disease statistics
+- **Microsoft Imagine Cup** — Platform and support
+- **Azure for Students** — Cloud resources
 
 ---
 
-**Built with ❤️ for doctors who save lives every day.**
+## 🎯 Quick Test for Judges
 
-**ClinGuard AI — Because every patient matters. Every second counts.**
+```bash
+# Test health endpoint
+curl https://clinguard-backend-api-ftemg2ddaca3c4d0.centralindia-01.azurewebsites.net/api/health
+
+# Test High Risk Case
+curl -X POST https://clinguard-backend-api-ftemg2ddaca3c4d0.centralindia-01.azurewebsites.net/api/analyze-risk \
+  -H "Content-Type: application/json" \
+  -d '{"age":65,"gender":"Male","systolicBP":180,"diastolicBP":110,"heartRate":120,"symptoms":"severe chest pain radiating to left arm with sweating","familyHistory":true}'
+```
+
+---
+
+<div align="center">
+
+**Built with ❤️ for Imagine Cup 2026**
+
+*Empowering doctors, saving lives*
+
+[![GitHub Stars](https://img.shields.io/github/stars/yourusername/clinguardai?style=social)](https://github.com/yourusername/clinguardai)
+
+</div>
